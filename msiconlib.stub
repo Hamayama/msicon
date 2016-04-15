@@ -1,0 +1,32 @@
+;;;
+;;; msiconlib.stub
+;;;
+
+"
+#include \"msicon.h\"
+"
+
+;; The following entry is a dummy one.
+;; Replace it for your definitions.
+
+(define-cproc test-msicon () ::<const-cstring>
+  (result "msicon is working"))
+
+(define-cproc set-window-icon (class-name window-name icon-file-name::<string>) ::<void>
+  (let* ([cname::LPCTSTR NULL]
+         [wname::LPCTSTR NULL]
+         [iname::LPCTSTR (SCM_MBS2WCS (Scm_GetStringConst icon-file-name))])
+    (unless (or (SCM_STRINGP class-name)  (SCM_FALSEP class-name))
+      (SCM_TYPE_ERROR class-name  "string or #f"))
+    (unless (or (SCM_STRINGP window-name) (SCM_FALSEP window-name))
+      (SCM_TYPE_ERROR window-name "string or #f"))
+    (when (SCM_STRINGP class-name)
+      (= cname (SCM_MBS2WCS (Scm_GetStringConst (SCM_STRING class-name)))))
+    (when (SCM_STRINGP window-name)
+      (= wname (SCM_MBS2WCS (Scm_GetStringConst (SCM_STRING window-name)))))
+    (set_window_icon cname wname iname)
+    ))
+
+;; Local variables:
+;; mode: scheme
+;; end:
