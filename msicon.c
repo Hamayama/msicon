@@ -24,14 +24,15 @@ void set_window_icon(LPCTSTR classname, LPCTSTR windowname, LPCTSTR iconfilename
 
 #if 0
     // for printing wide characters
+    int mode_old;
     _tsetlocale(LC_ALL, _T(""));
     fflush(stdout);
-    _setmode(_fileno(stdout), _O_TEXT);
+    mode_old = _setmode(_fileno(stdout), _O_TEXT);
     if (classname != NULL)    { _tprintf(_T("classname=%s\n"),    classname); }
     if (windowname != NULL)   { _tprintf(_T("windowname=%s\n"),   windowname); }
     if (iconfilename != NULL) { _tprintf(_T("iconfilename=%s\n"), iconfilename); }
     fflush(stdout);
-    _setmode(_fileno(stdout), _O_BINARY);
+    if (mode_old != -1) { _setmode(_fileno(stdout), mode_old); }
 #endif
 
     // get window handle
