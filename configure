@@ -37,13 +37,11 @@
 (cf-subst 'default_prefix (gauche-config "--prefix"))
 
 (cf-subst 'DEFAULT_CFLAGS (gauche-config "--default-cflags"))
-(let1 def-unicode ""
-  (cond-expand
-   [gauche.os.windows
-    (if (eq? (gauche-character-encoding) 'utf-8)
-      (set! def-unicode "-DUNICODE"))]
-   [else])
-  (cf-subst 'DEF_UNICODE def-unicode))
+(cf-subst 'DEF_UNICODE
+          (cond-expand
+           [gauche.os.windows
+            (if (eq? (gauche-character-encoding) 'utf-8) "-DUNICODE" "")]
+           [else ""]))
 
 (cf-subst 'SOEXT  (gauche-config "--so-suffix"))
 (cf-subst 'OBJEXT (gauche-config "--object-suffix"))
