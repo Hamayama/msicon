@@ -4,6 +4,9 @@
 
 (use gauche.configure)
 
+;; Disable environment variables
+(with-module gauche.configure (define (cf-arg-var symbol) #f))
+
 ;; Define extra --with-PACKAGE and --enable-FEATURE options.
 ;; These should come before cf-init so that cf-init can construct
 ;; proper usage string.
