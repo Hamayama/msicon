@@ -3,6 +3,7 @@
  */
 
 #include "msicon.h"
+#include <tchar.h>
 #include <locale.h>
 #include <fcntl.h>
 
