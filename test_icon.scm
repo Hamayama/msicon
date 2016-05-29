@@ -4,12 +4,17 @@
 (use os.windows)
 (use msicon)
 
-(define get-data-path
-  (let1 dir (if-let1 path (current-load-path)
-              (string-append (sys-dirname path) "/") "")
-    (lambda (fname) (string-append dir fname))))
+(define (make-fpath . paths)
+  (fold (lambda (p1 path)
+          (cond ((equal? path "") p1)
+                ((#/[\/\\]$/ path) (string-append path p1))
+                (else (string-append path "/" p1))))
+        ""
+        paths))
 
-(define *icon-file-path* (get-data-path "icon1.ico"))
+(define *app-dpath* (if-let1 path (current-load-path) (sys-dirname path) ""))
+
+(define *icon-file-path* (make-fpath *app-dpath* "icon1.ico"))
 (print  *icon-file-path*)
 
 (set-window-icon #f (sys-get-console-title) *icon-file-path*)
