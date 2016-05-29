@@ -1,5 +1,7 @@
 # msicon
 
+![image](image.png)
+
 ## 概要
 - Gauche の Windows 版で、ウィンドウの左上に表示されるアイコンを設定するための  
   モジュールです。
