@@ -1,13 +1,13 @@
 ;; -*- coding: utf-8 -*-
 ;;
 ;; msicon.scm
-;; 2016-4-22 v1.02
+;; 2016-10-14 v1.03
 ;;
-;; �����e��
-;;   Gauche �� Windows �łŁA�E�B���h�E�̍���ɕ\�������A�C�R����ݒ肷�邽�߂�
-;;   ���W���[���ł��B
+;; ＜内容＞
+;;   Gauche の Windows 版で、ウィンドウの左上に表示されるアイコンを設定するための
+;;   モジュールです。
 ;;
-;;   �ڍׂɂ��ẮA�ȉ��̃y�[�W���Q�Ƃ��������B
+;;   詳細については、以下のページを参照ください。
 ;;   https://github.com/Hamayama/msicon
 ;;
 (define-module msicon
