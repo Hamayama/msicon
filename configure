@@ -3,6 +3,7 @@
 ;; Run ./configure (or gosh ./configure) to generate Makefiles.
 
 (use gauche.configure)
+(use gauche.version)
 
 ;; Disable environment variables
 (with-module gauche.configure (define (cf-arg-var symbol) #f))
@@ -23,7 +24,9 @@
 
 ;; Initialize configure.  This creates the global context, parses
 ;; command-line args and sets up default values.
-(cf-init "msicon" "1.03" "fkyo0985@gmail.com")
+(if (version<=? (gauche-version) "0.9.4")
+  (cf-init "msicon" "1.04" "fkyo0985@gmail.com")
+  (cf-init))
 
 ;; Set up gauche related commands.  The commands are set by scanning
 ;; PATH.  You can override them by "GOSH=/my/gosh ./configure" etc.
@@ -50,9 +53,10 @@
            [(and gauche.os.windows gauche.ces.utf8) "-DUNICODE"]
            [else ""]))
 
-(cf-subst 'SOEXT  (gauche-config "--so-suffix"))
-(cf-subst 'OBJEXT (gauche-config "--object-suffix"))
-(cf-subst 'EXEEXT (gauche-config "--executable-suffix"))
+(when (version<=? (gauche-version) "0.9.4")
+  (cf-subst 'SOEXT  (gauche-config "--so-suffix"))
+  (cf-subst 'OBJEXT (gauche-config "--object-suffix"))
+  (cf-subst 'EXEEXT (gauche-config "--executable-suffix")))
 
 (cf-subst 'GAUCHE_PKGINCDIR  (gauche-config "--pkgincdir"))
 (cf-subst 'GAUCHE_PKGLIBDIR  (gauche-config "--pkglibdir"))
@@ -60,13 +64,15 @@
 
 ;; Output
 (use gauche.package)
-(let1 gpd-file #"~(cf$ 'PACKAGE_NAME).gpd"
-  (with-output-to-file gpd-file
-    (cut write-gauche-package-description
-      (make <gauche-package-description>
-        :name (cf$ 'PACKAGE_NAME)
-        :version (cf$ 'PACKAGE_VERSION)
-        :configure (string-join (command-line))))))
+(if (version<=? (gauche-version) "0.9.4")
+  (let1 gpd-file #"~(cf$ 'PACKAGE_NAME).gpd"
+    (with-output-to-file gpd-file
+      (cut write-gauche-package-description
+        (make <gauche-package-description>
+          :name (cf$ 'PACKAGE_NAME)
+          :version (cf$ 'PACKAGE_VERSION)
+          :configure (string-join (command-line))))))
+  (cf-make-gpd))
 (cf-echo (cf$ 'PACKAGE_VERSION) > "VERSION")
 (cf-output "Makefile")
 

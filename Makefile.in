@@ -48,10 +48,10 @@ msicon_SRCS = $(srcdir)/msicon.c $(srcdir)/msiconlib.stub
 all : $(TARGET)
 
 msicon.$(SOEXT): $(msicon_SRCS)
-	$(GAUCHE_PACKAGE) compile  --local=$(LOCAL_PATHS) \
-	  --cppflags="$(CPPFLAGS)" --cflags="$(CFLAGS)"   \
-	  --ldflags="$(LDFLAGS)"   --libs="$(LIBS)"       \
-	  --verbose msicon $(msicon_SRCS)
+	$(GAUCHE_PACKAGE) compile \
+	  --cppflags="$(CPPFLAGS)" --cflags="$(CFLAGS)" \
+	  --ldflags="$(LDFLAGS)"   --libs="$(LIBS)"     \
+	  --local=$(LOCAL_PATHS) --verbose msicon $(msicon_SRCS)
 
 check : all
 	@rm -f test.log
